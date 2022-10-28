@@ -17,30 +17,16 @@ public class JpaMain {
 
         try{
             // code
-            /*
-            // 등록 코드
+            // 영속 상태는 무엇이냐?
             Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA"); // 여기까지 비영속 상태이다.
 
-            member.setId(2L);
-            member.setName("HelloA");
-             */
-            /*
-            // 수정 코드
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("HelloJPA");
-             */
-
-            // 조회
-            // Member findMember = em.find(Member.class, 1L);
-
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
-                    .getResultList();
-
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
+            // 영속 상태로 변한다.
+            System.out.println("BEFORE");
+            em.persist(member); // 이때 DB에 저장되는 것이 아니라 commit 해야 DB에 저장된다.
+            em.detach(member); // 영속성 컨텍스트에서 해당 내용을 지운다.
+            System.out.println("AFTER"); // Before After 이 전부 실행된 후에 insert 쿼리가 날라간다.
 
             tx.commit(); // 트랜잭션 커밋 -> 저장
         } catch (Exception e) {
