@@ -15,18 +15,14 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction(); // 트랜잭션
         tx.begin(); // 트랜잭션 시작
 
-        try{
-            // code
-            // 영속 상태는 무엇이냐?
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA"); // 여기까지 비영속 상태이다.
+        try {
+            // 영속
+            // 첫번째 findMember1 에서는 DB에서 조회해오지만 2번째 findMember2 에서는 1차 캐시에서 조회해오기때문에 쿼리문이 날라가지않는다.
+            Member findMember1 = em.find(Member.class, 1L); // select 쿼리O
+            Member findMember2 = em.find(Member.class, 1L); // select 쿼리X
 
-            // 영속 상태로 변한다.
-            System.out.println("BEFORE");
-            em.persist(member); // 이때 DB에 저장되는 것이 아니라 commit 해야 DB에 저장된다.
-            em.detach(member); // 영속성 컨텍스트에서 해당 내용을 지운다.
-            System.out.println("AFTER"); // Before After 이 전부 실행된 후에 insert 쿼리가 날라간다.
+            // 영속 엔티티의 동일성을 보장한다.
+            System.out.println("result = " + (findMember1 == findMember2)); // true
 
             tx.commit(); // 트랜잭션 커밋 -> 저장
         } catch (Exception e) {
