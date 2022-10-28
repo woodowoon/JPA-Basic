@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -17,12 +16,14 @@ public class JpaMain {
 
         try {
             // 영속
-            // 첫번째 findMember1 에서는 DB에서 조회해오지만 2번째 findMember2 에서는 1차 캐시에서 조회해오기때문에 쿼리문이 날라가지않는다.
-            Member findMember1 = em.find(Member.class, 1L); // select 쿼리O
-            Member findMember2 = em.find(Member.class, 1L); // select 쿼리X
+            // 변경 감지
+            // 엔티티 수정은 변경감지에 의해서 하게된다.
+            Member member = em.find(Member.class, 100L);
+            member.setName("ㅋㅋㅋ"); // em.persist 를 해주지 않아도 변경된다. -> 자바컬렉션을 이용하는 것 처럼 이용하면 되는 부분이다.
 
-            // 영속 엔티티의 동일성을 보장한다.
-            System.out.println("result = " + (findMember1 == findMember2)); // true
+            // 삭제
+            Member memberA = em.find(Member.class, 100L);
+            em.remove(memberA);
 
             tx.commit(); // 트랜잭션 커밋 -> 저장
         } catch (Exception e) {
