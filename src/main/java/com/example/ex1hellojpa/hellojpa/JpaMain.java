@@ -16,12 +16,15 @@ public class JpaMain {
 
         try {
             // 영속
-            Member member = new Member();
-            member.setId(200L);
-            member.setName("member");
-            em.persist(member);
+            Member member = em.find(Member.class, 100L);
+            member.setName("AAAA");
 
-            em.flush(); // 플러시. 이시점에 데이터베이스 쿼리가 바로 날라가게 된다.
+            // 준영속상태 디태치
+            em.detach(member); // 더이상 JPA에서 관리하지않는다. 쿼리문 실행 XX
+
+            em.clear(); // 모든걸 초기화, 준영속상태로 변경, 디태치 상태
+
+            em.close(); // 영속성 컨텍스트를 종료
 
             tx.commit(); // 트랜잭션 커밋 -> 저장
         } catch (Exception e) {
