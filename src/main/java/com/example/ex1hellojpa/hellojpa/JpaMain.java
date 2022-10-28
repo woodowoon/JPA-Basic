@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,32 +14,17 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction(); // 트랜잭션
         tx.begin(); // 트랜잭션 시작
 
-        try{
-            // code
-            /*
-            // 등록 코드
-            Member member = new Member();
+        try {
+            // 영속
+            Member member = em.find(Member.class, 100L);
+            member.setName("AAAA");
 
-            member.setId(2L);
-            member.setName("HelloA");
-             */
-            /*
-            // 수정 코드
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("HelloJPA");
-             */
+            // 준영속상태 디태치
+            em.detach(member); // 더이상 JPA에서 관리하지않는다. 쿼리문 실행 XX
 
-            // 조회
-            // Member findMember = em.find(Member.class, 1L);
+            em.clear(); // 모든걸 초기화, 준영속상태로 변경, 디태치 상태
 
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
-                    .getResultList();
-
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
+            em.close(); // 영속성 컨텍스트를 종료
 
             tx.commit(); // 트랜잭션 커밋 -> 저장
         } catch (Exception e) {
