@@ -15,6 +15,12 @@ public class JpaMain {
         tx.begin(); // 트랜잭션 시작
 
         try {
+            Member member = new Member();
+            // id를 추가해주지 않아도 자동으로 추가된다.
+            member.setUsername("dowoon");
+
+            em.persist(member);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
