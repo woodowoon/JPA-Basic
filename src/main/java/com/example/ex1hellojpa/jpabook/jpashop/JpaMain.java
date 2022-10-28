@@ -1,4 +1,4 @@
-package com.example.ex1hellojpa.hellojpa;
+package com.example.ex1hellojpa.jpabook.jpashop;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,16 +11,10 @@ public class JpaMain {
 
         EntityManager em = emf.createEntityManager();
 
-        EntityTransaction tx = em.getTransaction(); // 트랜잭션
-        tx.begin(); // 트랜잭션 시작
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
         try {
-            Member member = new Member();
-            // id를 추가해주지 않아도 자동으로 추가된다.
-            member.setUsername("dowoon");
-
-            em.persist(member);
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

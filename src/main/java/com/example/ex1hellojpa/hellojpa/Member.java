@@ -1,19 +1,17 @@
 package com.example.ex1hellojpa.hellojpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.*;
 
-@Entity // JPA를 사용하는 애구나 하고 알게된다. 애노테이션
-// @Table(name = "User") 테이블 이름이 다를 경우 이런식으로 매핑할 수 있다.
+@Entity
 public class Member {
-
-    @Id
+    @Id // 기본키 맵핑
+    // 나는 직접 할당보다 값을 생성해서 사용하고 싶어.
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY : 숫자의 형태로 차례로 값이 들어가게된다.
+    @GeneratedValue(strategy = GenerationType.SEQUENCE) // 시퀀스의 형태로 값이 들어간다. (숫자)
     private Long id;
-    // @Column(name = "username") 컬럼명도 다를 경우 이런식으로 매핑이 가능하다.
-    private String name;
+
+    @Column(name = "name")
+    private String username;
 
     public Long getId() {
         return id;
@@ -23,11 +21,14 @@ public class Member {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Member() {
     }
 }
