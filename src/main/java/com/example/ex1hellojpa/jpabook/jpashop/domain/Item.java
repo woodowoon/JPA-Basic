@@ -1,11 +1,10 @@
 package com.example.ex1hellojpa.jpabook.jpashop.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+// @Entity
 public class Item {
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
