@@ -3,7 +3,7 @@ package com.example.ex1hellojpa.oopmapping.domain;
 import javax.persistence.*;
 
 // 연관관계 매핑 기초 - 단방향 연관관계
-@Entity
+//@Entity
 public class Member {
 
     @Id @GeneratedValue
