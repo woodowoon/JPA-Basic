@@ -3,7 +3,7 @@ package com.example.ex1hellojpa.jpabook.jpashop.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+// @Entity
 @Table(name = "ORDERS")
 public class Order {
     @Id @GeneratedValue
