@@ -3,7 +3,7 @@ package com.example.ex1hellojpa.oopmapping.domain;
 import javax.persistence.*;
 
 // 연관관계 매핑 기초 - 단방향 연관관계
-//@Entity
+// @Entity
 public class Member {
 
     @Id @GeneratedValue
@@ -13,12 +13,17 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
+    private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
+
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
-
-    @ManyToOne // member 입장에서는 many 이고 팀 입장에서는 one 이기때문에 ManyToOne 를 사용한다. / 관계가 뭔지?
-    @JoinColumn(name = "TEAM_ID") // 조인할때 관계가 있는 컬럼이 뭔대?
-    private Team team;
 
     public Long getId() {
         return id;
@@ -36,16 +41,4 @@ public class Member {
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
-    }
 }
