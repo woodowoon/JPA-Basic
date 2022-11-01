@@ -1,6 +1,7 @@
 package com.example.ex1hellojpa.oopmapping.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 // 연관관계 매핑 기초 - 단방향 연관관계
 // @Entity
@@ -20,7 +21,6 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "LOCKER_ID")
     private Locker locker;
-
 
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
