@@ -19,29 +19,19 @@ public class OopMain {
         tx.begin();
 
         try {
-            // 저장
-            Team team = new Team();
-            team.setName("bori");
-            // 역방향 (주인이 아닌 방향) 만 연관관계 설정 이렇게 할 경우 member team_id null 이 들어간다.
-            // team.getMembers().add(member);
-            em.persist(team);
-
+            // 일 대 다 관계
             Member member = new Member();
-            member.setUsername("dowoon");
-            // 이렇게 해줘야 정확히 team_id 에 값이 들어가게 된다.
-            member.changeTeam(team); // 이렇게 해줘도 되고
-            // team.addMember(member); // 이렇게 해줘도 된다.
+            member.setUsername("member1");
+
             em.persist(member);
 
-            // em.flush();
-            // em.clear();
+            Team team = new Team();
+            team.setName("teamA");
+            // 팀을 건들였는데, member 가 수정이 된다.
+            // 다대일에서 필요하면, 양방향 추가한다 라는 방식이 좋다.
+            team.getMembers().add(member);
 
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            for(Member m : members) {
-                System.out.println("m = " + m.getUsername());
-            }
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {

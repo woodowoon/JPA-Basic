@@ -15,7 +15,8 @@ public class Team {
     private String name;
 
     // 양방향 연관관계
-    @OneToMany(mappedBy = "team") // mappedBy: 이건 주인이 아니다, 그러니 읽기만 가능 / 나는 team 에 의해 관리되는 거야.
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
     public List<Member> getMembers() {
@@ -42,8 +43,4 @@ public class Team {
         this.name = username;
     }
 
-    public void addMember(Member member) {
-        member.setTeam(this);
-        members.add(member);
-    }
 }

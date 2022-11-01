@@ -1,10 +1,10 @@
 package com.example.ex1hellojpa.jpabook.jpashop.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-// @Entity
+@Entity
 public class Item {
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -13,6 +13,9 @@ public class Item {
     private String name;
     private int price;
     private int stockQuantity;
+
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
 
     public Long getId() {
         return id;
