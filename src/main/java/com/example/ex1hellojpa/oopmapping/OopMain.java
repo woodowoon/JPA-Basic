@@ -1,13 +1,11 @@
 package com.example.ex1hellojpa.oopmapping;
 
-import com.example.ex1hellojpa.oopmapping.domain.Member;
-import com.example.ex1hellojpa.oopmapping.domain.Team;
+import com.example.ex1hellojpa.oopmapping.domain.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class OopMain {
     public static void main(String[] args) {
@@ -19,19 +17,20 @@ public class OopMain {
         tx.begin();
 
         try {
-            // 일 대 다 관계
-            Member member = new Member();
-            member.setUsername("member1");
 
-            em.persist(member);
+            Movie movie = new Movie();
+            movie.setDirector("감독1");
+            movie.setActor("배우1");
+            movie.setName("바람과 함께 사라지다.");
+            movie.setPrice(10000);
 
-            Team team = new Team();
-            team.setName("teamA");
-            // 팀을 건들였는데, member 가 수정이 된다.
-            // 다대일에서 필요하면, 양방향 추가한다 라는 방식이 좋다.
-            team.getMembers().add(member);
+            em.persist(movie);
 
-            em.persist(team);
+            em.flush();
+            em.clear();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
             tx.commit();
         } catch (Exception e) {

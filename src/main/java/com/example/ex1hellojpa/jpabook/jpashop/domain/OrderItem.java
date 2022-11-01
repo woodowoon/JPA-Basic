@@ -2,7 +2,7 @@ package com.example.ex1hellojpa.jpabook.jpashop.domain;
 
 import javax.persistence.*;
 
-@Entity
+// @Entity
 public class OrderItem {
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")
