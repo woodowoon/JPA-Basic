@@ -2,7 +2,7 @@ package com.example.ex1hellojpa.oopmapping.domain;
 
 import javax.persistence.*;
 
-@Entity
+// @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // 각각 테이블 따로 생성되는 걸 확인할 수 있다.
 // @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 단일 테이블로 만들어지는걸 확인할 수 있다.
 // @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) // Item 테이블이 생성되는 것이 아닌, 각각의 따로 테이블이 만들어지고, ID, Name Price 등 중복으로 들어가게된다. 대신 이건 ITEM 추상클래스로 만들어야된다.
