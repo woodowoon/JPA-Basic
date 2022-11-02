@@ -1,6 +1,7 @@
 package com.example.ex1hellojpa.oopmapping;
 
-import com.example.ex1hellojpa.oopmapping.domain.Movie;
+import com.example.ex1hellojpa.oopmapping.domain.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,28 +17,32 @@ public class OopMain {
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
+        /**
+         * 영속성 전의 : CASCADE
+         *  - 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없다.
+         *  - 엔티티를 영속화할 때 연관된 엔티티도 함께 영속화하는 편리함을 제공할 뿐이다.
+         */
         try {
 
-            Movie movie = new Movie();
-            movie.setDirector("감독1");
-            movie.setActor("배우1");
-            movie.setName("바람과 함께 사라지다.");
-            movie.setPrice(10000);
-            movie.setCreateBy("dowoon");
-            movie.setCreatedDate(LocalDateTime.now()); // 분명 item 에 있는 속성인데 extend 를 통해서 movie 에서도 사용할 수 있다.
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            em.persist(movie);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            em.flush();
-            em.clear();
+            em.persist(parent);
+            // em.persist(child1); // cascade = CascadeType.ALL 를 이용하여 이것들이 주석 처리 되어도 제대로 값이 들어가게 된다.
+            // em.persist(child2);
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
         emf.close();
     }
+
 }
