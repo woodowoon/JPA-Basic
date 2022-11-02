@@ -1,10 +1,10 @@
 package com.example.ex1hellojpa.oopmapping.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
-// 연관관계 매핑 기초 - 단방향 연관관계
-// @Entity
+@Entity
 public class Member {
 
     @Id @GeneratedValue
@@ -14,13 +14,26 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-    // @ManyToOne(fetch = FetchType.LAZY) // Lazy : 지연로딩 - 멤버만 조회하고 팀은 거의 사용하지 않을때,
-    @ManyToOne(fetch = FetchType.EAGER) // EAGER : 즉시로딩 - 멤버와 팀을 함께 조회한다.
-    @JoinColumn
-    private Team team;
+    // 집 주소
+    @Embedded
+    private Address Homeaddress;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
+    // 회사 주소
+    @Embedded
+    @AttributeOverrides({ // Address 를 둘다 사용하고 싶은 경우에 이런식으로 사용할 수 있다.
+            @AttributeOverride(name="city",
+            column = @Column(name = "WORK_CITY")),
+            @AttributeOverride(name="street",
+            column = @Column(name = "WORK_STREET")),
+            @AttributeOverride(name = "zipcode",
+            column = @Column(name = "WORK_ZIPCODE"))
+    })
+    private Address Workaddress;
+
+
+    // 기간 Period
+    @Embedded
+    private Period workPeriod;
 
     public Long getId() {
         return id;
@@ -38,11 +51,19 @@ public class Member {
         this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
+    public Address getHomeaddress() {
+        return Homeaddress;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setHomeaddress(Address homeaddress) {
+        Homeaddress = homeaddress;
+    }
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
     }
 }
