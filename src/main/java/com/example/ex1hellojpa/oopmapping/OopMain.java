@@ -27,29 +27,21 @@ public class OopMain {
         try {
             // member 을 조회할때 team 도 함께 가져와야 할까?
 
-            Member member = new Member();
-            member.setUsername("hello");
-
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
 
             em.flush();
             em.clear();
 
-            // em.getReference 로 바꿔보자
-            // select 가 나가지 않는다.
-            Member findMember = em.getReference(Member.class, member.getId());
+            Member m1 = em.find(Member.class, member1.getId());
+            System.out.println("m1 = " + m1.getClass()); // Type : Member 프록시가 아니고 진짜가 나왔다.
 
-            // 이건 em.find
-            // Member findMember = em.find(Member.class, member.getId()); // 이건 Id를 이용해서 Member 를 가져오고
-            // 프록시 가짜 객체라는 뜻이다.
-            System.out.println("findMember = " + findMember.getClass()); // findMember = class com.example.ex1hellojpa.oopmapping.domain.Member$HibernateProxy$8yBlReUz
-            System.out.println("findMember = " + findMember.getId());
-            // getReference 를 호출하는 시점에서는 쿼리가 나가지 않는다. 하지만 실제로 사용할때는 쿼리문이 나가게 된다.
-            System.out.println("finfMember.username = " + findMember.getUsername()); // findMember 를 이용해서 getusername 을 가져오게 된다.
-            System.out.println("finfMember.username = " + findMember.getUsername()); // 쿼리가 2번 나가지 않는다.ㅍ
+            Member reference = em.getReference(Member.class, member1.getId());
+            System.out.println("reference = " + reference.getClass()); // 이것도 프록시가 아니고 진짜가 나온다..
 
-            // printMember(member);
-            // printMemberAndTeam(member);
+            // 한 영속성 컨텍스트 안에서 가져오기 때문에 항상 true 여야만 한다.
+            System.out.println("a == a : " + (m1 == reference) ); // true
 
             tx.commit();
         } catch (Exception e) {
@@ -60,15 +52,4 @@ public class OopMain {
         emf.close();
     }
 
-    private static void printMember(Member member) {
-        System.out.println("member = " + member.getUsername());
-    }
-
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
-
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
-    }
 }
