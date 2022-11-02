@@ -34,14 +34,16 @@ public class OopMain {
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member1.getId());
-            System.out.println("m1 = " + m1.getClass()); // Type : Member 프록시가 아니고 진짜가 나왔다.
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass()); // 프록시
 
-            Member reference = em.getReference(Member.class, member1.getId());
-            System.out.println("reference = " + reference.getClass()); // 이것도 프록시가 아니고 진짜가 나온다..
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("findMember = " + findMember.getClass()); // Member 일줄 알았더니 프록시..?
 
             // 한 영속성 컨텍스트 안에서 가져오기 때문에 항상 true 여야만 한다.
-            System.out.println("a == a : " + (m1 == reference) ); // true
+            // 이게 항상 true 이기 때문에 find 해도 프록시가 튀어나올 수 있다.
+            // 핵심은 프록시든 아니든 개발하는데 상관없어야한다가 포인트이다. 가장 중요한점.
+            System.out.println("refMember == findMember : " + (refMember == findMember) ); // false 일줄 알았는데 true..?
 
             tx.commit();
         } catch (Exception e) {
