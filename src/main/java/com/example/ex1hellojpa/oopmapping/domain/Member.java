@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 // 연관관계 매핑 기초 - 단방향 연관관계
-// @Entity
+@Entity
 public class Member {
 
     @Id @GeneratedValue
