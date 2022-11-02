@@ -2,7 +2,6 @@ package com.example.ex1hellojpa.oopmapping;
 
 import com.example.ex1hellojpa.oopmapping.domain.Address;
 import com.example.ex1hellojpa.oopmapping.domain.Member;
-import com.example.ex1hellojpa.oopmapping.domain.Period;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,12 +37,26 @@ public class OopMain {
          * - 컬렉션 값 타입(collection value type)
          */
         try {
-            Member member = new Member();
-            member.setUsername("hello");
-            member.setHomeaddress(new Address("city", "street", "10")); // member 을 통해서 값을 넣을 수 있다.
-            member.setWorkPeriod(new Period());
+            Address address = new Address("city", "street", "10");
 
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setHomeaddress(address);
+            em.persist(member1);
+
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode()); // 복사해서 사용해야한다.
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            // member2.setHomeaddress(address);  // 이렇게 사용하면 안된다.
+            member2.setHomeaddress(copyAddress);
+            em.persist(member2);
+
+            // 나는 member1 의 주소만 newCity 로 바꾸고 싶어.
+            // 근데 member1과 member2 둘다 바뀌어버린다.
+            // 값타입을 공유하면 굉장히 위험하다.
+            // 대신 값을 복사해서 사용해야한다.
+            member1.getHomeaddress().setCity("newCity");
 
             tx.commit();
         } catch (Exception e) {

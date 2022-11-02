@@ -1,8 +1,6 @@
 package com.example.ex1hellojpa.oopmapping.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Member {
@@ -17,19 +15,6 @@ public class Member {
     // 집 주소
     @Embedded
     private Address Homeaddress;
-
-    // 회사 주소
-    @Embedded
-    @AttributeOverrides({ // Address 를 둘다 사용하고 싶은 경우에 이런식으로 사용할 수 있다.
-            @AttributeOverride(name="city",
-            column = @Column(name = "WORK_CITY")),
-            @AttributeOverride(name="street",
-            column = @Column(name = "WORK_STREET")),
-            @AttributeOverride(name = "zipcode",
-            column = @Column(name = "WORK_ZIPCODE"))
-    })
-    private Address Workaddress;
-
 
     // 기간 Period
     @Embedded
