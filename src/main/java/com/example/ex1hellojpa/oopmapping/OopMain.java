@@ -3,6 +3,7 @@ package com.example.ex1hellojpa.oopmapping;
 import com.example.ex1hellojpa.oopmapping.domain.Member;
 import com.example.ex1hellojpa.oopmapping.domain.Movie;
 import com.example.ex1hellojpa.oopmapping.domain.Team;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -37,11 +38,11 @@ public class OopMain {
             Member refMember = em.getReference(Member.class, member1.getId());
             System.out.println("refMember = " + refMember.getClass()); // 프록시
 
-            em.detach(refMember);
-            // em.close();
+            refMember.getUsername(); // 이게 없으면 아래 코드는 false 이 나온다.
+            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember)); // 프록시 객체가 초기화 되었니? true
 
-            refMember.getUsername(); // 영속성 컨텍스트에 refmember 가 없기 때문에 오류가 뜨게 된다.
-
+            Hibernate.initialize(refMember); // 강제 초기화
+            
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
