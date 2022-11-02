@@ -14,7 +14,7 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-    // @ManyToOne(fetch = FetchType.LAZY) // Lazy : 지연로딩 - 멤버만 조회하고 팀은 거의 사용하지 않을때, 
+    // @ManyToOne(fetch = FetchType.LAZY) // Lazy : 지연로딩 - 멤버만 조회하고 팀은 거의 사용하지 않을때,
     @ManyToOne(fetch = FetchType.EAGER) // EAGER : 즉시로딩 - 멤버와 팀을 함께 조회한다.
     @JoinColumn
     private Team team;
