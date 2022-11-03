@@ -2,7 +2,7 @@ package com.example.ex1hellojpa.hellojpa;
 
 import javax.persistence.*;
 
-// @Entity
+@Entity
 public class Member {
     @Id // 기본키 맵핑
     // 나는 직접 할당보다 값을 생성해서 사용하고 싶어.
