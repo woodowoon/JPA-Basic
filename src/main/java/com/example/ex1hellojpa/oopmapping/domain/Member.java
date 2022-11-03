@@ -13,6 +13,7 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
+
     @Column(name = "USERNAME")
     private String username;
 
@@ -26,11 +27,15 @@ public class Member {
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ADDRESS", joinColumns =
-        @JoinColumn(name = "MEMBER_ID")
-    )
-    private List<Address> addressesHistory = new ArrayList<>();
+    // @ElementCollection
+    // @CollectionTable(name = "ADDRESS", joinColumns =
+    //     @JoinColumn(name = "MEMBER_ID")
+    // )
+    // private List<Address> addressesHistory = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // 값 타입보다 훨씬 더 좋다.
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressesHistory = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -52,13 +57,13 @@ public class Member {
         this.favoriteFoods = favoriteFoods;
     }
 
-    public List<Address> getAddressesHistory() {
-        return addressesHistory;
-    }
-
-    public void setAddressesHistory(List<Address> addressesHistory) {
-        this.addressesHistory = addressesHistory;
-    }
+//    public List<Address> getAddressesHistory() {
+//        return addressesHistory;
+//    }
+//
+//    public void setAddressesHistory(List<Address> addressesHistory) {
+//        this.addressesHistory = addressesHistory;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -70,6 +75,13 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public List<AddressEntity> getAddressesHistory() {
+        return addressesHistory;
+    }
+
+    public void setAddressesHistory(List<AddressEntity> addressesHistory) {
+        this.addressesHistory = addressesHistory;
     }
 
 }

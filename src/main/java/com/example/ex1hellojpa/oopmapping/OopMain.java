@@ -24,6 +24,7 @@ public class OopMain {
          *
          * - 값 타입 컬렉션
          *  - 값타입을 컬렉션에 담아서 쓰는것.
+         *  - 실무에서는 값타입컬렉션보다 일대다를 고려하는 것이 좋다.
          */
         try {
 
@@ -34,8 +35,11 @@ public class OopMain {
             member.getFavoriteFoods().add("피자");
             member.getFavoriteFoods().add("소고기");
 
-            member.getAddressesHistory().add(new Address("old1", "street", "1000"));
-            member.getAddressesHistory().add(new Address("old2", "street", "1000"));
+            // member.getAddressesHistory().add(new Address("old1", "street", "1000"));
+            // member.getAddressesHistory().add(new Address("old2", "street", "1000"));
+
+            // 위의 방법이 아닌 다른 방법
+
 
             em.persist(member);
 
@@ -46,16 +50,19 @@ public class OopMain {
             Member findMember = em.find(Member.class, member.getId());
             System.out.println("===============  END =================");
 
-            // 컬렉션은 Lazy : 지연로딩이라는 뜻이다.
-            List<Address> addressHistory = findMember.getAddressesHistory();
-            for(Address address : addressHistory) {
-                System.out.println("address = " + address.getCity());
-            }
+            // homeCity -> newCity
+            // findMember.getHomeAddress().setCity("new City"); // 이것은 안된다.
+            Address oldAddress = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("new City", oldAddress.getStreet(), oldAddress.getZipcode())); // 값타입을 통으로 갈아끼어야한다.
 
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            for(String favoriteFood : favoriteFoods) {
-                System.out.println("favoriteFood = " + favoriteFood);
-            }
+            // 피자 -> 한식
+            findMember.getFavoriteFoods().remove("피자");
+            findMember.getFavoriteFoods().add("한식");
+
+            System.out.println("=============== START =================");
+
+            // findMember.getAddressesHistory().remove(new Address("old1", "street", "1000")); // 그냥 모든걸 삭제하고
+            // findMember.getAddressesHistory().add(new Address("new City1", "street", "1000")); // insert 한다.
 
             tx.commit();
         } catch (Exception e) {
