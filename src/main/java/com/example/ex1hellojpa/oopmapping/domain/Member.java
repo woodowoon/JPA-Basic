@@ -1,9 +1,11 @@
 package com.example.ex1hellojpa.oopmapping.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-// 연관관계 매핑 기초 - 단방향 연관관계
 // @Entity
 public class Member {
 
@@ -11,20 +13,57 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
+
     @Column(name = "USERNAME")
     private String username;
 
-    // @ManyToOne(fetch = FetchType.LAZY) // Lazy : 지연로딩 - 멤버만 조회하고 팀은 거의 사용하지 않을때,
-    @ManyToOne(fetch = FetchType.EAGER) // EAGER : 즉시로딩 - 멤버와 팀을 함께 조회한다.
-    @JoinColumn
-    private Team team;
+    @Embedded
+    private Address homeAddress;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns =
+        @JoinColumn(name = "MEMBER_ID")
+    )
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    // @ElementCollection
+    // @CollectionTable(name = "ADDRESS", joinColumns =
+    //     @JoinColumn(name = "MEMBER_ID")
+    // )
+    // private List<Address> addressesHistory = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // 값 타입보다 훨씬 더 좋다.
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressesHistory = new ArrayList<>();
 
     public Long getId() {
         return id;
     }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+//    public List<Address> getAddressesHistory() {
+//        return addressesHistory;
+//    }
+//
+//    public void setAddressesHistory(List<Address> addressesHistory) {
+//        this.addressesHistory = addressesHistory;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -37,12 +76,12 @@ public class Member {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public Team getTeam() {
-        return team;
+    public List<AddressEntity> getAddressesHistory() {
+        return addressesHistory;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setAddressesHistory(List<AddressEntity> addressesHistory) {
+        this.addressesHistory = addressesHistory;
     }
+
 }
