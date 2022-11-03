@@ -19,11 +19,6 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Book book = new Book();
-            book.setName("1달러 경제여행");
-            book.setAuthor("우도운");
-
-            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {
