@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-// @Entity
+@Entity
 public class OrderItem extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")

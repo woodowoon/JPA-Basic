@@ -2,7 +2,7 @@ package com.example.ex1hellojpa.jpabook.jpashop.domain;
 
 import javax.persistence.Entity;
 
-// @Entity
+@Entity
 public class Albm extends Item {
     private String artist;
     private String etc;
